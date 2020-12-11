@@ -1,25 +1,76 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Dashboard from './components/Dashboard';
+import Login from './components/Login';
 
-export default App;
+
+
+export default class App extends Component {
+
+	state = {
+		isAuthenticated: false,
+		user: null
+	}
+
+	setUser = (user) => {
+		this.setState({
+			isAuthenticated: true,
+			user: user
+		});
+
+		this.persistUserSession(user, this.state.isAuthenticated);
+
+	}
+
+	persistUserSession = (user, isAuthenticated) => {
+		const sessionData = {
+			isAuthenticated: isAuthenticated,
+			givenName: user.givenName,
+			avatar: user.imageUrl,
+			name: user.name,
+			email: user.email
+		}
+
+		sessionStorage.setItem('auth', JSON.stringify(sessionData));
+	}
+
+	userLogout = () => {
+		this.setState({
+			isAuthenticated: false,
+			user: null
+		});
+
+		sessionStorage.removeItem('auth');
+	}
+
+	componentDidMount(){
+		const user = sessionStorage.getItem('auth');
+		if(user){
+			console.log('user from session storage', JSON.parse(user));
+
+			const userData = JSON.parse(user);
+
+			this.setState({
+				isAuthenticated: userData.isAuthenticated,
+				user: {
+					givenName: userData.givenName,
+					imageUrl: userData.avatar,
+					name: userData.name,
+					email: userData.email
+				}
+			})
+		}
+	}
+
+	render() {	
+
+		return (
+			<div className="App">
+				{ this.state.isAuthenticated ? <Dashboard user={this.state.user} logout={this.userLogout} /> : <Login cb={this.setUser} /> }
+			</div>
+		)
+	}
+}
