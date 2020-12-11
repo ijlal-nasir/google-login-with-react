@@ -2,14 +2,19 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Project Configuration
 
-In the project directory, you can run:
+1. You need google oauth key
+2. Once, you have the google oauth key
+3. Create .env.local file in the root of your project
+4. Add REACT_APP_GOOGLE_AUTH_API_KEY=YOUR_API_KEY_HERE
+5. Install project dependencies `yarn install`
+6. Cd into your project `cd {project-name}`
+7. Run project `yarn start`
 
-### `yarn start`
+## Packages Used
+1. [React Google Login](https://www.npmjs.com/package/react-google-login)
+2. [React Confirm Alert](https://www.npmjs.com/package/react-confirm-alert)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+
